@@ -157,11 +157,52 @@ function initContactForm() {
             }
         })
         .catch(error => {
-            // ERREUR RÉSEAU / CORS
+            // ERREUR RÉSEAU / CORS / ADBLOCKER
             console.error("Erreur Fetch:", error);
-            formResult.textContent = "Erreur réseau. Impossible de contacter le serveur Web3Forms.";
+            
+            // Récupérer les valeurs saisies pour préremplir l'e-mail de secours
+            const nom = contactForm.querySelector('[name="nom"]').value;
+            const prenom = contactForm.querySelector('[name="prenom"]').value;
+            const email = contactForm.querySelector('[name="email"]').value;
+            const entreprise = contactForm.querySelector('[name="entreprise"]').value;
+            const objet = contactForm.querySelector('[name="objet"]').value || "Contact";
+            const message = contactForm.querySelector('[name="message"]').value;
+            
+            const emailSubject = encodeURIComponent(`[Portfolio] ${objet} - ${prenom} ${nom}`);
+            const emailBody = encodeURIComponent(
+`Bonjour Luigi,
+
+Mon envoi via le formulaire du portfolio ayant échoué (bloqué par mon navigateur ou bloqueur de pub), je t'envoie mon message directement par e-mail :
+
+--------------------------------------------------
+Nom : ${prenom} ${nom}
+Entreprise : ${entreprise || 'Non spécifiée'}
+Email : ${email}
+--------------------------------------------------
+
+Message :
+${message}
+`
+            );
+            
+            const mailtoUrl = `mailto:luigi.denis.g@gmail.com?subject=${emailSubject}&body=${emailBody}`;
+            
+            formResult.innerHTML = `
+                <div style="margin-bottom: 1rem;">
+                    <strong style="font-size: 1.6rem;"><i class='bx bx-error-circle' style="vertical-align: middle; margin-right: 0.5rem; font-size: 2rem;"></i>Envoi bloqué par votre navigateur (Brave Shields ou bloqueur de pub) :</strong><br>
+                    Le serveur Web3Forms n'a pas pu être contacté. Cela arrive généralement lorsque <strong>Brave Shields</strong> ou une extension comme <strong>uBlock Origin</strong> filtre le service d'envoi.
+                </div>
+                <div style="font-size: 1.4rem; opacity: 0.95; margin-bottom: 1.5rem; line-height: 1.5;">
+                    Pas d'inquiétude, votre message n'est pas perdu ! Cliquez sur le bouton ci-dessous pour me l'envoyer directement par e-mail avec tous vos champs déjà pré-remplis :
+                </div>
+                <a href="${mailtoUrl}" class="btn" style="display: inline-flex; align-items: center; gap: 1rem; border-radius: 2rem; padding: 0.8rem 2rem; font-size: 1.4rem; font-weight: 600; text-decoration: none; color: var(--second-bg-color); transition: 0.3s; margin-top: 0.5rem;">
+                    <span>M'envoyer le message par e-mail</span>
+                    <i class='bx bx-mail-send' style="font-size: 2rem;"></i>
+                </a>
+            `;
             formResult.className = 'form-result error';
             formResult.style.display = 'block';
+            formResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
         })
         .finally(() => {
             submitBtn.disabled = false;
