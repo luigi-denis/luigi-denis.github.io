@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirection - Portfolio</title>
+  <script>
+    // Redirection automatique insensible à la casse
+    (function() {
+      var path = window.location.pathname.toLowerCase();
+      // Si la personne a tapé /PORTFOLIO, /Portfolio, /portfolio, etc.
+      if (path.includes('portfolio')) {
+        window.location.replace('https://luigi-denis.github.io/portfolio/');
+      } else {
+        window.location.replace('https://luigi-denis.github.io/portfolio/');
+      }
+    })();
+  </script>
+  <meta http-equiv="refresh" content="0;url=https://luigi-denis.github.io/portfolio/">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #0f172a;
+      color: #f8fafc;
+      text-align: center;
+    }
+    .loader {
+      border: 3px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      border-top: 3px solid #38bdf8;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    a { color: #38bdf8; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div>
+    <div class="loader"></div>
+    <h2>Redirection vers le portfolio...</h2>
+    <p>Si la redirection ne se fait pas automatiquement, <a href="https://luigi-denis.github.io/portfolio/">cliquez ici</a>.</p>
+  </div>
+</body>
+</html>
