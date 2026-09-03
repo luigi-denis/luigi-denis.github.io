@@ -198,7 +198,7 @@ ${message}
                     <strong style="font-size: 1.6rem;"><i class='bx bx-error-circle' style="vertical-align: middle; margin-right: 0.5rem; font-size: 2rem;"></i>Une erreur empêche l'envoi du formulaire.</strong>
                 </div>
                 <div style="font-size: 1.4rem; opacity: 0.95; margin-bottom: 1.2rem; line-height: 1.5;">
-                    Vous pouvez m'envoyer votre message directement par e-mail à <a href="${mailtoUrl}" style="color: var(--main-color); font-weight: 600; text-decoration: underline;">luigi.denis.g@gmail.com</a> ou via le bouton ci-dessous :
+                    Vous pouvez m'envoyer votre message directement par e-mail à <strong style="color: var(--main-color);">luigi.denis.g@gmail.com</strong> ou via le bouton ci-dessous :
                 </div>
                 <a href="${mailtoUrl}" class="btn" style="display: inline-flex; align-items: center; gap: 1rem; border-radius: 2rem; padding: 0.8rem 2rem; font-size: 1.4rem; font-weight: 600; text-decoration: none; color: var(--second-bg-color); transition: 0.3s;">
                     <span>M'envoyer un e-mail</span>
