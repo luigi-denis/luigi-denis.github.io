@@ -149,18 +149,24 @@ function initContactForm() {
                 playSuccessJingle();
                 formResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
-                // ERREUR SERVEUR (Clé invalide, spam, etc.)
+                // ERREUR SERVEUR
                 console.error("Erreur API:", data);
-                formResult.textContent = "Erreur Web3Forms: " + (data.message || "Impossible d'envoyer.");
-                formResult.className = 'form-result error';
-                formResult.style.display = 'block';
+                showFormError();
             }
         })
         .catch(error => {
-            // ERREUR RÉSEAU / CORS / ADBLOCKER
+            // ERREUR RÉSEAU / BLOQUEUR
             console.error("Erreur Fetch:", error);
-            
-            // Récupérer les valeurs saisies pour préremplir l'e-mail de secours
+            showFormError();
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            originalBtnSpan.textContent = originalBtnText;
+            originalBtnIcon.className = 'bx bx-send';
+            formResult.style.display = 'block';
+        });
+
+        function showFormError() {
             const nom = contactForm.querySelector('[name="nom"]').value;
             const prenom = contactForm.querySelector('[name="prenom"]').value;
             const email = contactForm.querySelector('[name="email"]').value;
@@ -172,7 +178,7 @@ function initContactForm() {
             const emailBody = encodeURIComponent(
 `Bonjour Luigi,
 
-Mon envoi via le formulaire du portfolio ayant échoué (bloqué par mon navigateur ou bloqueur de pub), je t'envoie mon message directement par e-mail :
+Une erreur s'étant produite lors de l'envoi via le formulaire du portfolio, je vous contacte directement par e-mail :
 
 --------------------------------------------------
 Nom : ${prenom} ${nom}
@@ -188,28 +194,21 @@ ${message}
             const mailtoUrl = `mailto:luigi.denis.g@gmail.com?subject=${emailSubject}&body=${emailBody}`;
             
             formResult.innerHTML = `
-                <div style="margin-bottom: 1rem;">
-                    <strong style="font-size: 1.6rem;"><i class='bx bx-error-circle' style="vertical-align: middle; margin-right: 0.5rem; font-size: 2rem;"></i>Envoi bloqué par votre navigateur (Brave Shields ou bloqueur de pub) :</strong><br>
-                    Le serveur Web3Forms n'a pas pu être contacté. Cela arrive généralement lorsque <strong>Brave Shields</strong> ou une extension comme <strong>uBlock Origin</strong> filtre le service d'envoi.
+                <div style="margin-bottom: 0.8rem;">
+                    <strong style="font-size: 1.6rem;"><i class='bx bx-error-circle' style="vertical-align: middle; margin-right: 0.5rem; font-size: 2rem;"></i>Une erreur empêche l'envoi du formulaire.</strong>
                 </div>
-                <div style="font-size: 1.4rem; opacity: 0.95; margin-bottom: 1.5rem; line-height: 1.5;">
-                    Pas d'inquiétude, votre message n'est pas perdu ! Cliquez sur le bouton ci-dessous pour me l'envoyer directement par e-mail avec tous vos champs déjà pré-remplis :
+                <div style="font-size: 1.4rem; opacity: 0.95; margin-bottom: 1.2rem; line-height: 1.5;">
+                    Vous pouvez m'envoyer votre message directement par e-mail à <a href="${mailtoUrl}" style="color: var(--main-color); font-weight: 600; text-decoration: underline;">luigi.denis.g@gmail.com</a> ou via le bouton ci-dessous :
                 </div>
-                <a href="${mailtoUrl}" class="btn" style="display: inline-flex; align-items: center; gap: 1rem; border-radius: 2rem; padding: 0.8rem 2rem; font-size: 1.4rem; font-weight: 600; text-decoration: none; color: var(--second-bg-color); transition: 0.3s; margin-top: 0.5rem;">
-                    <span>M'envoyer le message par e-mail</span>
+                <a href="${mailtoUrl}" class="btn" style="display: inline-flex; align-items: center; gap: 1rem; border-radius: 2rem; padding: 0.8rem 2rem; font-size: 1.4rem; font-weight: 600; text-decoration: none; color: var(--second-bg-color); transition: 0.3s;">
+                    <span>M'envoyer un e-mail</span>
                     <i class='bx bx-mail-send' style="font-size: 2rem;"></i>
                 </a>
             `;
             formResult.className = 'form-result error';
             formResult.style.display = 'block';
             formResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        })
-        .finally(() => {
-            submitBtn.disabled = false;
-            originalBtnSpan.textContent = originalBtnText;
-            originalBtnIcon.className = 'bx bx-send';
-            formResult.style.display = 'block';
-        });
+        }
     });
 }
 
